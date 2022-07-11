@@ -8,7 +8,7 @@ data = pd.read_csv("/Users/shellyschwartz/PycharmProjects/apriori-algo/pros_data
 #apriori stuff
 
 # Extracting the most frequest itemsets via Mlxtend.
-frequent_itemsets = apriori(data, min_support=0.055, use_colnames=True, max_len = 2)
+frequent_itemsets = apriori(data, min_support=0.054, use_colnames=True, max_len = 2)
 frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
 
 # printing the frequent itemset

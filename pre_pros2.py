@@ -28,6 +28,7 @@ for pat in list(patients):
         print(first["Date"], curr["Event"], curr["Date"], count)
 
         if(count <= time_win and i < len(dat)-1): #check if cumulative difference is within the time window
+            print(count, curr["Event"])
             sub_arr.append(curr["Event"]) #add the current even to sub array since it is within the time window
 
             if(curr["Type"]=="Procedure" or "Procedure"==first["Type"]): #update booleans for wether or not time window contains procededure and diagnosis
@@ -37,7 +38,7 @@ for pat in list(patients):
 
         elif (count <= time_win and i == len(dat)-1) or (count > time_win): #added edge case for when a valid event is the last row of dat
 
-            if i == len(dat)-1:
+            if i == len(dat)-1 and count < time_win:
                 sub_arr.append(curr["Event"])
                 if(curr["Type"] == "Diagnosis"):
                     diag = 1
