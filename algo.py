@@ -8,7 +8,7 @@ data = pd.read_csv("/Users/shellyschwartz/PycharmProjects/apriori-algo/pros_data
 #apriori stuff
 
 # Extracting the most frequest itemsets via Mlxtend.
-frequent_itemsets = apriori(data, min_support=0.007, use_colnames=True, max_len = 2)
+frequent_itemsets = apriori(data, min_support=0.06, use_colnames=True, max_len = 2)
 frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
 
 # printing the frequent itemset
@@ -17,7 +17,7 @@ print(frequent_itemsets)
 #restrict length = 1
 
 #  We set our metric as "Lift" to define whether antecedents & consequents are dependent our not
-rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=.08)
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=.1)
 rules["antecedents_length"] = rules["antecedents"].apply(lambda x: len(x))
 rules["consequents_length"] = rules["consequents"].apply(lambda x: len(x))
 rules = rules.sort_values("lift")
@@ -31,10 +31,10 @@ dict = {'00160J6': 'Procedure', '009600Z': 'Procedure', '009U3ZX': 'Procedure', 
 df = pd.DataFrame(columns = rules.columns)
 for row in rules.iterrows():
 
-    if(dict[list(row[1]['antecedents'])[0]] != "Procedure" and dict[list(row[1]['consequents'])[0]] != "Procedure"):
-        continue
+    if((dict[list(row[1]['antecedents'])[0]] == "Procedure" and dict[list(row[1]['consequents'])[0]] == "Diagnosis") or (dict[list(row[1]['antecedents'])[0]] == "Diagnosis" and dict[list(row[1]['consequents'])[0]] == "Procedure")):
+        df = df.append(row[1])
     else:
-     df = df.append(row[1])
+        continue
 
 
 
