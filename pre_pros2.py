@@ -11,28 +11,39 @@ arr = []
 time_win = 7
 for pat in list(patients):
     dat = pat[1]
-    dat = dat.sort_values(by=['Date']) #sort
+    dat = dat.sort_values(by=['Date']) #sort times from least to greatest
     first = dat.iloc[0]
     sub_arr = [first["Event"]] #set first event found in patient group to be first index of a time window
 
     count = 0
-
     proc = 0
     diag = 0
-    print(dat)
-    for i in range(1, len(dat)):
-        curr = dat.iloc[i]
-        count = count + (curr["Date"] - first['Date']) # find difference from beg of time window
-        print(first["Date"], curr["Event"], curr["Date"], count)
-        if(count <= time_win): #check if cumulative difference is within the time window
 
+    print(dat)
+
+    for i in range(1, len(dat)):
+
+        curr = dat.iloc[i]
+        count = count + (curr["Date"] - first['Date']) # find cumulative difference starting from beg of time window
+        print(first["Date"], curr["Event"], curr["Date"], count)
+
+        if(count <= time_win and i < len(dat)-1): #check if cumulative difference is within the time window
             sub_arr.append(curr["Event"]) #add the current even to sub array since it is within the time window
 
             if(curr["Type"]=="Procedure" or "Procedure"==first["Type"]): #update booleans for wether or not time window contains procededure and diagnosis
                 proc = 1
             if (curr["Type"] == "Diagnosis" or "Diagnosis"==first["Type"]):
                 diag = 1
-        else:
+
+        elif (count <= time_win and i == len(dat)-1) or (count > time_win): #added edge case for when a valid event is the last row of dat
+
+            if i == len(dat)-1:
+                sub_arr.append(curr["Event"])
+                if(curr["Type"] == "Diagnosis"):
+                    diag = 1
+                if (curr["Type"] == "Procedure"):
+                    proc = 1
+
             if (proc == 1 and diag == 1): #check if there are procedures and diagnosis in the window
                 print(sub_arr)
                 arr.append(sub_arr) #save transaction
@@ -40,6 +51,7 @@ for pat in list(patients):
             count = 0 #reset time window count
             proc = 0 #reset bools
             diag = 0
+
         first = curr  # set first event to be curr, so time window events can be updated
 
 
@@ -79,12 +91,12 @@ for trans in arr:
     for event in trans:
         new_df.iloc[count][event] = 1  #make a boolean
     count = count + 1
-print(new_df)
+#print(new_df)
 #
 #
 #
 new_df.replace({0: False, 1: True}, inplace=True)
 #
-print(new_df)
+#print(new_df)
 #
 new_df.to_csv('/Users/shellyschwartz/PycharmProjects/apriori-algo/pros_data2.csv', index = False)
