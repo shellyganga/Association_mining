@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv("/Users/shellyschwartz/Downloads/Cardiovascular_exdp.csv")
 
+print(df)
+
 patients = df.groupby("PID")
 count = 0
 for pat in list(patients):

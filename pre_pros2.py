@@ -8,7 +8,7 @@ patients = df.groupby("PID")
 
 arr = []
 
-time_win = 7
+time_win = 10
 for pat in list(patients):
     dat = pat[1]
     dat = dat.sort_values(by=['Date']) #sort times from least to greatest
@@ -20,7 +20,7 @@ for pat in list(patients):
     diag = 0
 
     print(dat)
-
+#+2vjc62WbZt6PviRGEAhyA==
     for i in range(1, len(dat)):
 
         curr = dat.iloc[i]
@@ -39,10 +39,11 @@ for pat in list(patients):
         elif (count <= time_win and i == len(dat)-1) or (count > time_win): #added edge case for when a valid event is the last row of dat
 
             if i == len(dat)-1 and count < time_win:
+
                 sub_arr.append(curr["Event"])
-                if(curr["Type"] == "Diagnosis"):
+                if(curr["Type"] == "Diagnosis" or first["Type"] == "Diagnosis" ):
                     diag = 1
-                if (curr["Type"] == "Procedure"):
+                if (curr["Type"] == "Procedure" or first["Type"] == "Procedure"):
                     proc = 1
 
             if (proc == 1 and diag == 1): #check if there are procedures and diagnosis in the window
