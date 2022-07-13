@@ -38,12 +38,11 @@ for pat in list(patients):
 
         elif (count <= time_win and i == len(dat)-1) or (count > time_win): #added edge case for when a valid event is the last row of dat
 
-            if i == len(dat)-1 and count < time_win:
-
+            if i == len(dat)-1 and count <= time_win:
                 sub_arr.append(curr["Event"])
                 if(curr["Type"] == "Diagnosis" or first["Type"] == "Diagnosis" ):
                     diag = 1
-                if (curr["Type"] == "Procedure" or first["Type"] == "Procedure"):
+                if (curr["Type"] == "Procedure" or first["Type"] == "Procedure" ):
                     proc = 1
 
             if (proc == 1 and diag == 1): #check if there are procedures and diagnosis in the window

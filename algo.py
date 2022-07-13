@@ -8,7 +8,7 @@ data = pd.read_csv("/Users/shellyschwartz/PycharmProjects/apriori-algo/pros_data
 #apriori stuff
 
 # Extracting the most frequest itemsets via Mlxtend.
-frequent_itemsets = apriori(data, min_support=0.05, use_colnames=True,  max_len = 2)
+frequent_itemsets = apriori(data, min_support=0.04, use_colnames=True,  max_len = 2)
 frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
 
 # printing the frequent itemset
@@ -16,7 +16,7 @@ print(frequent_itemsets)
 
 #restrict length = 1
 
-#  We set our metric as "Lift" to define whether antecedents & consequents are dependent our not
+#  We set our metric as "confidence to define whether antecedents & consequents are dependent our not
 rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=.4)
 rules["antecedents_length"] = rules["antecedents"].apply(lambda x: len(x))
 rules["consequents_length"] = rules["consequents"].apply(lambda x: len(x))
